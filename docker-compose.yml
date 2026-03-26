@@ -1,8 +1,8 @@
 services:
   web:
     build: .
-#    command: python manage.py runserver 0.0.0.0:8000
-    command: gunicorn django_project.wsgi -b 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000
+    # command: gunicorn django_project.wsgi -b 0.0.0.0:8000
     volumes:
       - .:/home/fiow00/django/django_for_professionals/
     ports:

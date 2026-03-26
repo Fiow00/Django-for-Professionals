@@ -5,16 +5,24 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 
-from .models import Book, Review
+from .models import Book, Review, Category, Author, Order, OrderItem, Wishlist
 
 # Create your tests here.
 class BookTests(TestCase):
     @classmethod
     def setUpTestData(cls):
+        cls.category = Category.objects.create(
+            name="Fantasy"
+        )
+        cls.author_obj = Author.objects.create(
+            name="JK Rowling"
+        )
         cls.book = Book.objects.create(
-            title = "Harry Potter",
-            author = "JK Rowling",
-            price = "25.00",
+            title="Harry Potter",
+            author=cls.author_obj,
+            price="25.00",
+            inventory=100,
+            category=cls.category,
         )
 
         cls.special_permission = Permission.objects.get(
@@ -35,7 +43,10 @@ class BookTests(TestCase):
 
     def test_book_model(self):
         self.assertEqual(self.book.title, "Harry Potter")
-        self.assertEqual(self.book.author, "JK Rowling")
+        self.assertEqual(self.book.author.name, "JK Rowling")
+        self.assertEqual(str(self.book.author), "JK Rowling")
+        self.assertEqual(self.book.category.name, "Fantasy")
+        self.assertEqual(self.book.inventory, 100)
         self.assertEqual(self.book.price, "25.00")
 
     def test_book_list_view_logged_in_user(self):
@@ -69,6 +80,8 @@ class BookTests(TestCase):
         self.assertContains(response, "Harry Potter")
         self.assertContains(response, "An excellent review")
         self.assertContains(response, self.book.title)
-        self.assertContains(response, self.book.author)
+        self.assertContains(response, self.book.author.name)
+        self.assertContains(response, self.book.category.name)
         self.assertContains(response, self.book.price)
+        self.assertContains(response, self.book.inventory)
         self.assertContains(response, self.review.review)

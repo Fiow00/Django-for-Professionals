@@ -1,4 +1,34 @@
-.venv/
+# Python
 __pycache__/
+*.py[cod]
+*.sqlite3
+
+# Virtual environment
+.venv/
+.env/
+.env.*
+
+# Django
+*.log
+staticfiles/
+media/
 db.sqlite3
-docker-compose-prod.yml
+
+# Migrations (optional — keep if you want)
+# */migrations/*
+# !*/migrations/__init__.py
+
+# Environment variables
+.env
+
+# Docker
+*.pid
+*.sock
+
+# VS Code / IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
